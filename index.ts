@@ -1,5 +1,5 @@
 import { model } from "./ai-settings";
-import { JSON } from "./object-notations/JSON.on";
+import { JSON } from "./object-notations/JSON";
 import type { ObjectNotation } from "./interfaces";
 
 

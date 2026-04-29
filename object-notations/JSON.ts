@@ -2,7 +2,7 @@ import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
 
-import type { ObjectNotation } from "../interfaces";
+import type { ObjectNotation } from "../interfaces.ts";
 import { users_test_questions } from "../raw-datasets/users-test/users-test.questions.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
