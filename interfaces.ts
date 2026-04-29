@@ -5,7 +5,7 @@ export interface ObjectNotation {
   */
   systemInstruction: string;
 
-  dataset: Dataset;
+  datasets: Dataset[];
 }
 
 export interface Dataset {

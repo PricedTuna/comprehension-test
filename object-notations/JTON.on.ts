@@ -15,12 +15,14 @@ Reglas de decodificación Zen Grid:
 2. La primera fila tras los dos puntos son las cabeceras (headers).
 3. Las filas siguientes están separadas por punto y coma (;).
 4. Los valores dentro de una fila están separados por comas (,).
-`
+`;
+
+const users_dataset = {
+  data: jtonData,
+  questions: users_test_questions,
+};
 
 export const JTON: ObjectNotation = {
   systemInstruction,
-  dataset: {
-    data: jtonData,
-    questions: users_test_questions,
-  },
+  datasets: [users_dataset],
 };
