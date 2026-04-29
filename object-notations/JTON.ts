@@ -32,23 +32,27 @@ Reglas de decodificación Zen Grid:
 // ============================= datasets
 
 const users_dataset = {
+  name: "users_test",
   data: usersJtonData,
   questions: users_test_questions,
 };
 
 const inventory_dataset = {
+  name: "inventory",
   data: inventoryJtonData,
   questions: inventoryQuestions,
 };
 
 const cripto_dataset = {
+  name: "cripto",
   data: criptoJtonData,
   questions: criptoQuestions,
 };
 
 // ============================= ObjectNotation
 
-export const JTON: ObjectNotation = {
+export const JTON_on: ObjectNotation = {
+  name: "JTON",
   systemInstruction,
   datasets: [
     users_dataset,
@@ -56,7 +60,3 @@ export const JTON: ObjectNotation = {
     cripto_dataset
   ],
 };
-
-console.log(
-  JTON.datasets.map((dataset) => dataset.data)
-)

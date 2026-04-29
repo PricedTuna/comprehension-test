@@ -25,23 +25,27 @@ const systemInstruction = "Eres un asistente experto en procesar JSON";
 // ============================= datasets
 
 const users_dataset = {
+  name: "users_test",
   data: usersTestJsonData,
   questions: users_test_questions,
 };
 
 const cripto_dataset = {
+  name: "cripto",
   data: criptoJsonData,
   questions: criptoQuestions,
 };
 
 const inventory_dataset = {
+  name: "inventory",
   data: inventoryJsonData,
   questions: inventoryQuestions,
 };
 
 // ============================= ObjectNotation
 
-export const JSON: ObjectNotation = {
+export const JSON_on: ObjectNotation = {
+  name: "JSON",
   systemInstruction,
   datasets: [
     users_dataset, 
@@ -50,6 +54,10 @@ export const JSON: ObjectNotation = {
   ],
 };
 
-console.log(
-  JSON.datasets.map((dataset) => dataset.data)
-)
+export const JSON_minimal: ObjectNotation = {
+  name: "JSON_minimal",
+  systemInstruction,
+  datasets: [
+    users_dataset
+  ],
+};

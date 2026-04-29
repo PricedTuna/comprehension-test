@@ -1,14 +1,16 @@
 export interface ObjectNotation {
+  name: string;
   /**
-  * Define el sistema de instrucciones para que Gemini entienda JTON/TRON.
-  * Basado en la guía de integración de TRON v3.2.
-  */
+   * Define el sistema de instrucciones para que Gemini entienda JTON/TRON.
+   * Basado en la guía de integración de TRON v3.2.
+   */
   systemInstruction: string;
 
   datasets: Dataset[];
 }
 
 export interface Dataset {
+  name: string;
   /**
   * Ejemplo de Dataset en formato JTON Zen Grid (Employee Records)
   */

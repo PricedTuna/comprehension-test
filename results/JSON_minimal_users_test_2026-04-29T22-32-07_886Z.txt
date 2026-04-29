@@ -1,0 +1,275 @@
+Object Notation: JSON_minimal
+Dataset: users_test
+Total Tokens Consumed: 1233
+============================================================
+
+--- Session 1 ---
+Prompt:
+Session 1:
+Based on the following data:
+
+```
+[
+  {
+    "id": 1,
+    "name": "Alice",
+    "dept": "Engineering",
+    "salary": 95000
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+    "dept": "Sales",
+    "salary": 87000
+  },
+  {
+    "id": 3,
+    "name": "Carol",
+    "dept": "Engineering",
+    "salary": 92000
+  }
+]
+
+```
+
+answer this question: ¿Cuál es el salario exacto de la empleada llamada Alice?.
+
+Response:
+El salario exacto de Alice es **95000**.
+
+Usage Metadata:
+{
+  "promptTokenCount": 171,
+  "candidatesTokenCount": 14,
+  "totalTokenCount": 227,
+  "promptTokensDetails": [
+    {
+      "modality": "TEXT",
+      "tokenCount": 171
+    }
+  ],
+  "thoughtsTokenCount": 42
+}
+
+============================================================
+
+--- Session 2 ---
+Prompt:
+Session 2:
+Based on the following data:
+
+```
+[
+  {
+    "id": 1,
+    "name": "Alice",
+    "dept": "Engineering",
+    "salary": 95000
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+    "dept": "Sales",
+    "salary": 87000
+  },
+  {
+    "id": 3,
+    "name": "Carol",
+    "dept": "Engineering",
+    "salary": 92000
+  }
+]
+
+```
+
+answer this question: ¿Cuál es el promedio de salario de todos los empleados en el dataset?.
+
+Response:
+Para calcular el promedio de salario, sumamos todos los salarios y dividimos por el número total de empleados:
+
+*   **Salarios:** 95000, 87000, 92000
+*   **Suma de salarios:** 95000 + 87000 + 92000 = 274000
+*   **Número de empleados:** 3
+
+**Promedio de salario:** 274000 / 3 = 91333.33
+
+El promedio de salario de todos los empleados en el dataset es **91333.33**.
+
+Usage Metadata:
+{
+  "promptTokenCount": 172,
+  "candidatesTokenCount": 148,
+  "totalTokenCount": 463,
+  "promptTokensDetails": [
+    {
+      "modality": "TEXT",
+      "tokenCount": 172
+    }
+  ],
+  "thoughtsTokenCount": 143
+}
+
+============================================================
+
+--- Session 3 ---
+Prompt:
+Session 3:
+Based on the following data:
+
+```
+[
+  {
+    "id": 1,
+    "name": "Alice",
+    "dept": "Engineering",
+    "salary": 95000
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+    "dept": "Sales",
+    "salary": 87000
+  },
+  {
+    "id": 3,
+    "name": "Carol",
+    "dept": "Engineering",
+    "salary": 92000
+  }
+]
+
+```
+
+answer this question: Enumera los nombres de los empleados que pertenecen al departamento de 'Engineering'..
+
+Response:
+Aquí tienes los nombres de los empleados del departamento de 'Engineering':
+
+*   Alice
+*   Carol
+
+Usage Metadata:
+{
+  "promptTokenCount": 173,
+  "candidatesTokenCount": 21,
+  "totalTokenCount": 287,
+  "promptTokensDetails": [
+    {
+      "modality": "TEXT",
+      "tokenCount": 173
+    }
+  ],
+  "thoughtsTokenCount": 93
+}
+
+============================================================
+
+--- Session 4 ---
+Prompt:
+Session 4:
+Based on the following data:
+
+```
+[
+  {
+    "id": 1,
+    "name": "Alice",
+    "dept": "Engineering",
+    "salary": 95000
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+    "dept": "Sales",
+    "salary": 87000
+  },
+  {
+    "id": 3,
+    "name": "Carol",
+    "dept": "Engineering",
+    "salary": 92000
+  }
+]
+
+```
+
+answer this question: ¿Qué departamento tiene el salario individual más alto: Sales o Engineering?.
+
+Response:
+El departamento de **Engineering** tiene el salario individual más alto, con 95,000 (Alice).
+
+*   **Engineering:** 95,000 (Alice), 92,000 (Carol)
+*   **Sales:** 87,000 (Bob)
+
+Usage Metadata:
+{
+  "promptTokenCount": 171,
+  "candidatesTokenCount": 66,
+  "totalTokenCount": 577,
+  "promptTokensDetails": [
+    {
+      "modality": "TEXT",
+      "tokenCount": 171
+    }
+  ],
+  "thoughtsTokenCount": 340
+}
+
+============================================================
+
+--- Session 5 ---
+Prompt:
+Session 5:
+Based on the following data:
+
+```
+[
+  {
+    "id": 1,
+    "name": "Alice",
+    "dept": "Engineering",
+    "salary": 95000
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+    "dept": "Sales",
+    "salary": 87000
+  },
+  {
+    "id": 3,
+    "name": "Carol",
+    "dept": "Engineering",
+    "salary": 92000
+  }
+]
+
+```
+
+answer this question: ¿Cuántos empleados tienen un salario superior a 90,000?.
+
+Response:
+Analizando los datos proporcionados:
+
+*   **Alice** (Engineering) tiene un salario de 95,000. (Superior a 90,000)
+*   **Bob** (Sales) tiene un salario de 87,000. (No superior a 90,000)
+*   **Carol** (Engineering) tiene un salario de 92,000. (Superior a 90,000)
+
+Hay **2** empleados con un salario superior a 90,000.
+
+Usage Metadata:
+{
+  "promptTokenCount": 174,
+  "candidatesTokenCount": 123,
+  "totalTokenCount": 341,
+  "promptTokensDetails": [
+    {
+      "modality": "TEXT",
+      "tokenCount": 174
+    }
+  ],
+  "thoughtsTokenCount": 44
+}
+
+============================================================
+
