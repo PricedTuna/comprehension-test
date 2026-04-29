@@ -15,7 +15,7 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RESULTS_DIR = path.join(__dirname, "results");
 
-export async function runComprehensionTest(objectNotation: ObjectNotation) {
+export async function runComprehensionTest(objectNotation: ObjectNotation, delayMs: number = 12000) {
   const timestamp = new Date().toISOString().replace(/:/g, "-").replace(/\./g, "_");
   const folderName = `${objectNotation.name}_${timestamp}`;
   const folderPath = path.join(RESULTS_DIR, folderName);
@@ -30,6 +30,7 @@ export async function runComprehensionTest(objectNotation: ObjectNotation) {
   console.log(`  MODEL: ${MODEL_NAME}`);
   console.log(`  NOTATION: ${objectNotation.name}`);
   console.log(`  DATASETS: ${objectNotation.datasets.length}`);
+  console.log(`  DELAY: ${delayMs}ms`);
   console.log(`  TIMESTAMP: ${timestamp}`);
   console.log("=".repeat(60) + "\n");
 
@@ -52,8 +53,8 @@ export async function runComprehensionTest(objectNotation: ObjectNotation) {
 
       try {
         console.log(`Session ${sessionNumber}/${questionKeys.length}: Processing "${questionKey}"`);
-        console.log(`Session ${sessionNumber}: Waiting 12s for rate limit...`);
-        await sleep(12000);
+        console.log(`Session ${sessionNumber}: Waiting ${delayMs}ms for rate limit...`);
+        await sleep(delayMs);
 
         console.log(`Session ${sessionNumber}: Sending request to OpenAI API...`);
         const { textResponse, usageMetadata } = await getAIResponse(
