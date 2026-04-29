@@ -3,10 +3,22 @@ import { fileURLToPath } from "url";
 import path from "path";
 
 import type { ObjectNotation } from "../interfaces";
-import { users_test_questions } from "../raw-datasets/users-test/users-test.questions";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const jtonData = readFileSync(path.join(__dirname, "../raw-datasets/users-test/users-test.jton"), "utf-8");
+
+// ============================= users-test
+const usersJtonData = readFileSync(path.join(__dirname, "../raw-datasets/users-test/users-test.jton"), "utf-8");
+import { users_test_questions } from "../raw-datasets/users-test/users-test.questions.ts";
+
+// ============================= inventory
+const inventoryJtonData = readFileSync(path.join(__dirname, "../raw-datasets/inventory/inventory.jton"), "utf-8");
+import { inventoryQuestions } from "../raw-datasets/inventory/inventory.questions.ts";
+
+// ============================= cipto
+const ciptoJtonData = readFileSync(path.join(__dirname, "../raw-datasets/cipto/cipto.jton"), "utf-8");
+import { criptoQuestions } from "../raw-datasets/cipto/cipto.questions.ts";
+
+// ============================= systemInstruction
 
 const systemInstruction = `
 Eres un asistente experto en procesar datos en formato TRON/JTON.
@@ -17,12 +29,30 @@ Reglas de decodificación Zen Grid:
 4. Los valores dentro de una fila están separados por comas (,).
 `;
 
+// ============================= datasets
+
 const users_dataset = {
-  data: jtonData,
+  data: usersJtonData,
   questions: users_test_questions,
 };
 
+const inventory_dataset = {
+  data: inventoryJtonData,
+  questions: inventoryQuestions,
+};
+
+const cipto_dataset = {
+  data: ciptoJtonData,
+  questions: criptoQuestions,
+};
+
+// ============================= ObjectNotation
+
 export const JTON: ObjectNotation = {
   systemInstruction,
-  datasets: [users_dataset],
+  datasets: [
+    users_dataset,
+    inventory_dataset,
+    cipto_dataset
+  ],
 };

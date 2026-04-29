@@ -3,12 +3,20 @@ import { fileURLToPath } from "url";
 import path from "path";
 
 import type { ObjectNotation } from "../interfaces.ts";
-import { users_test_questions } from "../raw-datasets/users-test/users-test.questions.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// ============================= users-test
 const usersTestJsonData = readFileSync(path.join(__dirname, "../raw-datasets/users-test/users-test.json"), "utf-8");
+import { users_test_questions } from "../raw-datasets/users-test/users-test.questions.ts";
+
+// ============================= crypto
 const cryptoJsonData = readFileSync(path.join(__dirname, "../raw-datasets/crypto/crypto.json"), "utf-8");
+import { criptoQuestions } from "../raw-datasets/cipto/cipto.questions.ts";
+
+// ============================= inventory
 const inventoryJsonData = readFileSync(path.join(__dirname, "../raw-datasets/inventory/inventory.json"), "utf-8");
+import { inventoryQuestions } from "../raw-datasets/inventory/inventory.questions.ts";
 
 // ============================= systemInstruction
 
@@ -23,12 +31,12 @@ const users_dataset = {
 
 const crypto_dataset = {
   data: cryptoJsonData,
-  questions: users_test_questions,
+  questions: criptoQuestions,
 };
 
 const inventory_dataset = {
   data: inventoryJsonData,
-  questions: users_test_questions,
+  questions: inventoryQuestions,
 };
 
 // ============================= ObjectNotation
