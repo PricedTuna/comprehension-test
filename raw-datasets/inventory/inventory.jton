@@ -1,4 +1,1 @@
-[3: sku, item, stock, price;
-"KB-99", "Teclado Mecánico", 15, 45.50;
-"MO-01", "Mouse Inalámbrico", 42, 25.00;
-"MN-24", "Monitor 24 pulg", 8, 180.00]
+[3: sku, item, stock, price; "KB-99", "Teclado Mecánico", 15, 45.50; "MO-01", "Mouse Inalámbrico", 42, 25.00; "MN-24", "Monitor 24 pulg", 8, 180.00]

@@ -56,3 +56,7 @@ export const JTON: ObjectNotation = {
     cipto_dataset
   ],
 };
+
+console.log(
+  JTON.datasets.map((dataset) => dataset.data)
+)
