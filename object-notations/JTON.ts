@@ -14,9 +14,9 @@ import { users_test_questions } from "../raw-datasets/users-test/users-test.ques
 const inventoryJtonData = readFileSync(path.join(__dirname, "../raw-datasets/inventory/inventory.jton"), "utf-8");
 import { inventoryQuestions } from "../raw-datasets/inventory/inventory.questions.ts";
 
-// ============================= cipto
-const ciptoJtonData = readFileSync(path.join(__dirname, "../raw-datasets/cipto/cipto.jton"), "utf-8");
-import { criptoQuestions } from "../raw-datasets/cipto/cipto.questions.ts";
+// ============================= cripto
+const criptoJtonData = readFileSync(path.join(__dirname, "../raw-datasets/cripto/cripto.jton"), "utf-8");
+import { criptoQuestions } from "../raw-datasets/cripto/cripto.questions.ts";
 
 // ============================= systemInstruction
 
@@ -41,8 +41,8 @@ const inventory_dataset = {
   questions: inventoryQuestions,
 };
 
-const cipto_dataset = {
-  data: ciptoJtonData,
+const cripto_dataset = {
+  data: criptoJtonData,
   questions: criptoQuestions,
 };
 
@@ -53,7 +53,7 @@ export const JTON: ObjectNotation = {
   datasets: [
     users_dataset,
     inventory_dataset,
-    cipto_dataset
+    cripto_dataset
   ],
 };
 

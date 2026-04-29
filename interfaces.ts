@@ -17,9 +17,14 @@ export interface Dataset {
 }
 
 export interface Questions {
-  Lookup: string;
-  Aggregation: string;
-  Filtering: string;
-  Comparison: string;
-  Count: string;
+  Lookup: Question;
+  Aggregation: Question;
+  Filtering: Question;
+  Comparison: Question;
+  Count: Question;
+}
+
+export interface Question {
+  question: string;
+  answer: string;
 }

@@ -1,5 +1,5 @@
 [
-  { "sku": "KB-99", "item": "Teclado Mecánico", "stock": 15, "price": 45.50 },
-  { "sku": "MO-01", "item": "Mouse Inalámbrico", "stock": 42, "price": 25.00 },
-  { "sku": "MN-24", "item": "Monitor 24 pulg", "stock": 8, "price": 180.00 }
+  { "sku": "KB-99", "item": "Teclado Mecánico", "stock": 15, "price": 45.5 },
+  { "sku": "MO-01", "item": "Mouse Inalámbrico", "stock": 42, "price": 25.0 },
+  { "sku": "MN-24", "item": "Monitor 24 pulg", "stock": 8, "price": 180.0 }
 ]
