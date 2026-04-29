@@ -64,7 +64,6 @@ npx ts-node --esm index.ts --openai --delay 3000  # OpenAI with 3s delay
 ```
 comprehension-test/
 ├── index.ts                    # Entry point with CLI arg parsing
-├── index-2.ts                  # OpenAI-specific entry point (legacy)
 ├── test-runner.ts              # Gemini test runner with ASCII art
 ├── test-runner-2.ts            # OpenAI test runner with ASCII art
 ├── ai-interaction.ts           # Gemini API interactions
