@@ -46,9 +46,14 @@ npx ts-node --esm index.ts -g
 npx ts-node --esm index.ts --openai
 npx ts-node --esm index.ts -o
 
+# Local LLM (Ollama, LM Studio, etc.)
+npx ts-node --esm index.ts --local
+npx ts-node --esm index.ts -l
+
 # Custom delay (in milliseconds)
-npx ts-node --esm index.ts --delay 5000      # 5s delay
-npx ts-node --esm index.ts --openai --delay 3000  # OpenAI with 3s delay
+npx ts-node --esm index.ts --delay 5000              # 5s delay
+npx ts-node --esm index.ts --openai --delay 3000    # OpenAI with 3s delay
+npx ts-node --esm index.ts --local --delay 1000     # Local with 1s delay
 ```
 
 ### CLI Options
@@ -57,7 +62,23 @@ npx ts-node --esm index.ts --openai --delay 3000  # OpenAI with 3s delay
 |------|-------|-------------|
 | `--gemini` | `-g` | Use Gemini (default) |
 | `--openai` | `-o` | Use OpenAI/DeepSeek |
+| `--local` | `-l` | Use Local LLM (Ollama, LM Studio, etc.) |
 | `--delay <ms>` | - | Wait time between requests (default: 12000ms) |
+
+### Local LLM Setup
+
+The local provider uses OpenAI-compatible API. Configure via environment variables in `.env`:
+
+```
+LOCAL_BASE_URL=http://localhost:11434/v1    # Ollama default (default)
+LOCAL_MODEL_NAME=llama3.2                    # Model name (default)
+LOCAL_API_KEY=dummy                           # Usually not required
+```
+
+Supported local servers:
+- **Ollama**: Default URL `http://localhost:11434/v1`
+- **LM Studio**: Default URL `http://localhost:1234/v1`
+- **LocalAI**: Configure based on your setup
 
 ## Project Structure
 

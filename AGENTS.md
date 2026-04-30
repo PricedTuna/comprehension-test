@@ -11,11 +11,13 @@ Runs AI comprehension tests for object notations (JSON/JTON) against structured 
 ## Run
 No npm scripts defined. Execute directly with provider selection:
 ```bash
-npx ts-node --esm index.ts                    # Default: Gemini, 12s delay
-npx ts-node --esm index.ts --gemini           # Gemini (explicit)
-npx ts-node --esm index.ts -g                # Gemini (short)
-npx ts-node --esm index.ts --openai           # OpenAI/DeepSeek
-npx ts-node --esm index.ts -o                # OpenAI/DeepSeek (short)
+npx ts-node --esm index.ts              # Default: Gemini
+npx ts-node --esm index.ts --gemini    # Gemini (explicit)
+npx ts-node --esm index.ts -g          # Gemini (short)
+npx ts-node --esm index.ts --openai    # OpenAI/DeepSeek
+npx ts-node --esm index.ts -o          # OpenAI/DeepSeek (short)
+npx ts-node --esm index.ts --local     # Local LLM (Ollama, LM Studio)
+npx ts-node --esm index.ts -l          # Local LLM (short)
 npx ts-node --esm index.ts --delay 5000      # Custom delay (5s)
 npx ts-node --esm index.ts --openai --delay 3000  # OpenAI with 3s delay
 ```

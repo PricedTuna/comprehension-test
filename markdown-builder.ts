@@ -19,10 +19,10 @@ export function buildHeader(
   modelName: string
 ): string {
   return `# Comprehension Test Results\n\n` +
-         `**Model**: ${modelName}\n` +
-         `**Object Notation**: ${objectNotationName}\n` +
-         `**Dataset**: ${datasetName}\n` +
-         `**Total Tokens Consumed**: ${totalTokens}\n` +
+         `**Model**: ${modelName}\n\n` +
+         `**Object Notation**: ${objectNotationName}\n\n` +
+         `**Dataset**: ${datasetName}\n\n` +
+         `**Total Tokens Consumed**: ${totalTokens}\n\n` +
          `**Timestamp**: ${timestamp}\n\n` +
          `---\n\n`;
 }
