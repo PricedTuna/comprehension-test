@@ -6,19 +6,14 @@ import type { ObjectNotation } from "../interfaces";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// ============================= users-test
 const usersJtonData = readFileSync(path.join(__dirname, "../raw-datasets/users-test/users-test.jton"), "utf-8");
 import { users_test_questions } from "../raw-datasets/users-test/users-test.questions.ts";
 
-// ============================= inventory
 const inventoryJtonData = readFileSync(path.join(__dirname, "../raw-datasets/inventory/inventory.jton"), "utf-8");
 import { inventoryQuestions } from "../raw-datasets/inventory/inventory.questions.ts";
 
-// ============================= cripto
 const criptoJtonData = readFileSync(path.join(__dirname, "../raw-datasets/cripto/cripto.jton"), "utf-8");
 import { criptoQuestions } from "../raw-datasets/cripto/cripto.questions.ts";
-
-// ============================= systemInstruction
 
 const systemInstruction = `
 Eres un asistente experto en procesar datos en formato TRON/JTON.
@@ -28,8 +23,6 @@ Reglas de decodificación Zen Grid:
 3. Las filas siguientes están separadas por punto y coma (;).
 4. Los valores dentro de una fila están separados por comas (,).
 `;
-
-// ============================= datasets
 
 const users_dataset = {
   name: "users_test",
@@ -48,8 +41,6 @@ const cripto_dataset = {
   data: criptoJtonData,
   questions: criptoQuestions,
 };
-
-// ============================= ObjectNotation
 
 export const JTON_on: ObjectNotation = {
   name: "JTON",
