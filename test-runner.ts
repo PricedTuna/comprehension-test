@@ -11,53 +11,26 @@ import {
   buildDetailsSection,
   buildCompleteMarkdown
 } from "./markdown-builder.ts";
+import {
+  printHeader,
+  printDatasetStart,
+  printSessionStart,
+  printWaiting,
+  printSending,
+  printSuccess,
+  printError,
+  printResultsSaved
+} from "./cli-logger.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RESULTS_DIR = path.join(__dirname, "results");
-
-const ASCII_HEADERS: Record<string, string> = {
-  gemini: `
-   ██████╗ ███████╗███╗   ███╗██╗███╗   ██╗██╗
-  ██╔════╝ ██╔════╝████╗ ████║██║████╗  ██║██║
-  ██║  ███╗█████╗  ██╔████╔██║██║██╔██╗ ██║██║
-  ██║   ██║██╔══╝  ██║╚██╔╝██║██║██║╚██╗██║██║
-  ╚██████╔╝███████╗██║ ╚═╝ ██║██║██║ ╚████║██║
-   ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝`,
-  openai: `
-   ██████╗ ██████╗ ███████╗███╗   ██╗
-  ██╔═══██╗██╔══██╗██╔════╝████╗  ██║
-  ██║   ██║██████╔╝█████╗  ██╔██╗ ██║
-  ██║   ██║██╔═══╝ ██╔══╝  ██║╚██╗██║
-  ╚██████╔╝██║     ███████╗██║ ╚████║
-   ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝`,
-  local: `
-   ██╗      ██████╗  ██████╗  █████╗  ██╗
-  ██║     ██╔═══██╗██╔════╝ ██╔══██╗ ██║
-  ██║     ██║   ██║██║      ███████║ ██║
-  ██║     ██║   ██║██║      ██╔══██║ ██║
-  ███████╗╚██████╔╝╚██████╗ ██║  ██║ ██████╗
-  ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝`
-};
-
-const API_MESSAGES: Record<string, string> = {
-  gemini: "Sending request to Gemini API...",
-  openai: "Sending request to OpenAI API...",
-  local: "Sending request to Local API..."
-};
 
 export async function runComprehensionTest(objectNotation: ObjectNotation, delayMs: number = 12000) {
   const timestamp = new Date().toISOString().replace(/:/g, "-").replace(/\./g, "_");
   const folderName = `${objectNotation.name}_${timestamp}`;
   const folderPath = path.join(RESULTS_DIR, folderName);
 
-  console.log(ASCII_HEADERS[provider]);
-  console.log("\n" + "=".repeat(60));
-  console.log(`  MODEL: ${MODEL_NAME}`);
-  console.log(`  NOTATION: ${objectNotation.name}`);
-  console.log(`  DATASETS: ${objectNotation.datasets.length}`);
-  console.log(`  DELAY: ${delayMs}ms`);
-  console.log(`  TIMESTAMP: ${timestamp}`);
-  console.log("=".repeat(60) + "\n");
+  printHeader(MODEL_NAME, objectNotation.name, objectNotation.datasets.length, delayMs, timestamp, provider);
 
   await fs.mkdir(folderPath, { recursive: true });
 
@@ -66,10 +39,12 @@ export async function runComprehensionTest(objectNotation: ObjectNotation, delay
     let totalTokens = 0;
 
     const questionKeys = Object.keys(dataset.questions) as Array<keyof typeof dataset.questions>;
-    console.log(`\nProcessing dataset: ${dataset.name} (${questionKeys.length} questions)`);
+    printDatasetStart(dataset.name, questionKeys.length);
 
     for (let i = 0; i < questionKeys.length; i++) {
       const questionKey = questionKeys[i];
+      if (!questionKey) continue;
+
       const questionObj = dataset.questions[questionKey];
       const question = questionObj.question;
       const datasetAnswer = questionObj.answer;
@@ -77,18 +52,18 @@ export async function runComprehensionTest(objectNotation: ObjectNotation, delay
       const prompt = getSessionPrompt(dataset, question, sessionNumber);
 
       try {
-        console.log(`Session ${sessionNumber}/${questionKeys.length}: Processing "${questionKey}"`);
-        console.log(`Session ${sessionNumber}: Waiting ${delayMs}ms for rate limit...`);
+        printSessionStart(sessionNumber, questionKeys.length, questionKey as string);
+        printWaiting(sessionNumber, delayMs);
         await sleep(delayMs);
 
-        console.log(`Session ${sessionNumber}: ${API_MESSAGES[provider]}`);
+        printSending(provider);
         const { textResponse, usageMetadata } = await getAIResponse(
           prompt,
           objectNotation.systemInstruction,
           sessionNumber
         );
 
-        console.log(`Session ${sessionNumber}: Response received successfully`);
+        printSuccess(sessionNumber);
 
         let sessionTokens = 0;
         if (usageMetadata) {
@@ -110,7 +85,7 @@ export async function runComprehensionTest(objectNotation: ObjectNotation, delay
         });
 
       } catch (error: any) {
-        console.error(`Session ${sessionNumber}: Error - ${error.message}`);
+        printError(sessionNumber, error.message);
         sessionDataArray.push({
           sessionNumber,
           questionKey: questionKey as string,
@@ -143,6 +118,6 @@ export async function runComprehensionTest(objectNotation: ObjectNotation, delay
     const fullLog = buildCompleteMarkdown(header, questionsAndAnswers, details);
 
     await fs.writeFile(filePath, fullLog);
-    console.log(`Results saved to: ${filePath}`);
+    printResultsSaved(filePath);
   }
 }

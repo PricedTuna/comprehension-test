@@ -25,10 +25,13 @@ async function main() {
   // Parse delay argument (optional)
   let delayMs = 12000; // default 12s
   const delayIndex = args.indexOf("--delay");
-  if (delayIndex !== -1 && args[delayIndex + 1]) {
-    const parsed = parseInt(args[delayIndex + 1], 10);
-    if (!isNaN(parsed) && parsed >= 0) {
-      delayMs = parsed;
+  if (delayIndex !== -1) {
+    const argValue = args[delayIndex + 1];
+    if (argValue) {
+      const parsed = parseInt(argValue, 10);
+      if (!isNaN(parsed) && parsed >= 0) {
+        delayMs = parsed;
+      }
     }
   }
   

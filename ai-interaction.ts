@@ -1,6 +1,12 @@
 import type { Dataset } from "./interfaces.ts";
 import { provider, geminiModel, openAIClient, MODEL_NAME } from "./ai-settings.ts";
 import OpenAI from "openai";
+import {
+  C,
+  printRetry,
+  printServerError,
+  printAuthError
+} from "./cli-logger.ts";
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -33,7 +39,6 @@ export async function getAIResponse(
   let delay = 2000;
 
   if (provider === 'gemini') {
-    // Gemini-specific logic from original ai-interaction.ts
     for (let i = 0; i < retries; i++) {
       try {
         const result = await geminiModel!.generateContent({
@@ -55,14 +60,14 @@ export async function getAIResponse(
             ? parseInt(retryInfo.retryDelay.replace("s", "")) * 1000
             : delay;
 
-          console.warn(`Session ${sessionNumber}: Rate limited (429), retrying in ${retryDelay}ms (attempt ${i + 1}/${retries})`);
+          printRetry(sessionNumber, 429, retryDelay, i + 1, retries);
           await sleep(retryDelay);
         } else if (status === 503) {
-          console.warn(`Session ${sessionNumber}: Service unavailable (503), retrying in ${delay}ms (attempt ${i + 1}/${retries})`);
+          printServerError(sessionNumber, 503, delay, i + 1, retries);
           await sleep(delay);
           delay *= 2;
         } else if (status === 403) {
-          console.warn(`Session ${sessionNumber}: Forbidden (403), retrying in ${delay}ms (attempt ${i + 1}/${retries})`);
+          printRetry(sessionNumber, 403, delay, i + 1, retries);
           await sleep(delay);
           delay *= 2;
         } else {
@@ -71,7 +76,6 @@ export async function getAIResponse(
       }
     }
   } else {
-    // OpenAI/Local logic from ai-interactions-2.ts and -3.ts
     for (let i = 0; i < retries; i++) {
       try {
         const response = await openAIClient!.chat.completions.create({
@@ -83,8 +87,11 @@ export async function getAIResponse(
           temperature: 0.3,
         });
 
+        const choice = response.choices[0];
+        if (!choice) throw new Error('No response from API');
+
         return {
-          textResponse: response.choices[0].message.content || "",
+          textResponse: choice.message.content || "",
           usageMetadata: {
             promptTokenCount: response.usage?.prompt_tokens || 0,
             candidatesTokenCount: response.usage?.completion_tokens || 0,
@@ -95,25 +102,25 @@ export async function getAIResponse(
         const status = error instanceof OpenAI.APIError ? error.status : undefined;
 
         if (status === 429) {
-          console.warn(`Session ${sessionNumber}: Rate limited (429), retrying in ${delay}ms (attempt ${i + 1}/${retries})`);
+          printRetry(sessionNumber, 429, delay, i + 1, retries);
           await sleep(delay);
           delay *= 2;
         } else if (status === 503 || status === 500) {
-          console.warn(`Session ${sessionNumber}: Server error (${status}), retrying in ${delay}ms (attempt ${i + 1}/${retries})`);
+          printServerError(sessionNumber, status, delay, i + 1, retries);
           await sleep(delay);
           delay *= 2;
         } else if (status === 401 || status === 403) {
-          console.error(`Session ${sessionNumber}: Auth/Permissions error (${status}). Check your API Key.`);
+          printAuthError(sessionNumber, status);
           throw error;
         } else {
-          console.error(`Session ${sessionNumber}: Error - ${error.message}`);
+          console.error(`${C.red}${C.bold}✗ Session ${sessionNumber}: Error - ${error.message}${C.reset}`);
           throw error;
         }
       }
     }
   }
 
-  throw new Error(`Session ${sessionNumber}: Max retries reached`);
+  throw new Error(`${C.red}${C.bold}✗ Session ${sessionNumber}: Max retries reached${C.reset}`);
 }
 
 export { sleep };
