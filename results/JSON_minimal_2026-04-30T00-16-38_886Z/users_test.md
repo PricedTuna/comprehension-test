@@ -1,10 +1,14 @@
 # Comprehension Test Results
 
 **Model**: llama3:latest
+
 **Object Notation**: JSON_minimal
+
 **Dataset**: users_test
-**Total Tokens Consumed**: 1486
-**Timestamp**: 2026-04-30T00-06-54_462Z
+
+**Total Tokens Consumed**: 1548
+
+**Timestamp**: 2026-04-30T00-16-38_886Z
 
 ---
 
@@ -16,14 +20,14 @@
 ¿Cuál es el salario exacto de la empleada llamada Alice?
 
 **AI Answer:**
-According to the provided JSON data, the salary of the employee named "Alice" is exactly:
+Basándome en los datos proporcionados, puedo procesar el JSON y obtener la información solicitada.
 
-95000
+La respuesta es: El salario exacto de la empleada llamada Alice es 95000.
 
 **Dataset Answer:**
 95000
 
-**Tokens Used:** 184
+**Tokens Used:** 204
 
 ---
 
@@ -35,31 +39,31 @@ According to the provided JSON data, the salary of the employee named "Alice" is
 **AI Answer:**
 To calculate the average salary of all employees in the dataset, I can process the JSON data as follows:
 
-1. First, I'll extract the salaries from the JSON objects:
+1. First, I'll extract the salaries from the JSON array:
 ```json
-const salaries = [
-  95000,
-  87000,
-  92000
-];
+const salaries = [];
+for (const employee of data) {
+  salaries.push(employee.salary);
+}
+console.log(salaries); // Output: [95000, 87000, 92000]
 ```
-2. Then, I'll calculate the sum of the salaries:
+2. Next, I'll calculate the sum of all salaries:
 ```javascript
 const totalSalary = salaries.reduce((acc, current) => acc + current, 0);
 console.log(totalSalary); // Output: 274000
 ```
-3. Finally, I'll calculate the average salary by dividing the total salary by the number of employees:
+3. Finally, I'll divide the total salary by the number of employees to get the average salary:
 ```javascript
 const avgSalary = totalSalary / salaries.length;
-console.log(avgSalary); // Output: 91400
+console.log(avgSalary); // Output: 91433.33333333333
 ```
 
-So, the average salary of all employees in the dataset is $91,400.
+So, the average salary of all employees in the dataset is approximately $91,433.
 
 **Dataset Answer:**
 91333.33
 
-**Tokens Used:** 339
+**Tokens Used:** 365
 
 ---
 
@@ -69,17 +73,17 @@ So, the average salary of all employees in the dataset is $91,400.
 Enumera los nombres de los empleados que pertenecen al departamento de 'Engineering'.
 
 **AI Answer:**
-Based on the provided JSON data, I can extract the names of employees who belong to the "Engineering" department. Here are the results:
+Based on the provided JSON data, the employees who belong to the department of 'Engineering' are:
 
 1. Alice
 2. Carol
 
-These two employees have their department set to "Engineering", so they meet the criteria.
+These two employees have a "dept" value of "Engineering".
 
 **Dataset Answer:**
 Alice, Carol
 
-**Tokens Used:** 220
+**Tokens Used:** 208
 
 ---
 
@@ -89,23 +93,37 @@ Alice, Carol
 ¿Qué departamento tiene el salario individual más alto: Sales o Engineering?
 
 **AI Answer:**
-To answer this question, I'll need to process the JSON data and extract the relevant information.
+Para responder a esta pregunta, podemos procesar el JSON y comparar los salarios de cada departamento.
 
-First, I'll identify the employees in each department:
+ Primero, podemos extraer la información de salario para cada empleado y almacenarla en un diccionario:
 
-* Engineering: Alice (95000), Carol (92000)
-* Sales: Bob (87000)
+```
+salaries = {}
+for employee in data:
+    salaries[employee["dept"]] = [employee["salary"] for employee in data if employee["dept"] == employee["dept"]]
+```
 
-Next, I'll compare the salaries of employees in both departments. Since 95000 is greater than 92000 and 87000, it's clear that the highest individual salary is found in the Engineering department.
+Luego, podemos comparar los salarios de cada departamento:
 
-Therefore, my answer to the question is:
+```
+if max(salaries["Engineering"]) > max(salaries["Sales"]):
+  print("El salario individual más alto es en el Departamento de Ingeniería.")
+elif max(salaries["Sales"]) > max(salaries["Engineering"]):
+  print("El salario individual más alto es en Ventas (Departamento de Sales).")
+else:
+  print("Los salarios individuales son iguales en ambos departamentos.")
+```
 
-The department with the highest individual salary: Engineering.
+Al ejecutar este código, obtenemos el resultado:
+
+`El salario individual más alto es en el Departamento de Ingeniería.`
+
+Por lo tanto, el departamento que tiene el salario individual más alto es Engineering.
 
 **Dataset Answer:**
 Engineering
 
-**Tokens Used:** 274
+**Tokens Used:** 395
 
 ---
 
@@ -115,58 +133,35 @@ Engineering
 ¿Cuántos empleados tienen un salario superior a 90,000?
 
 **AI Answer:**
-Para responder a esta pregunta, podemos procesar el JSON y contar el número de empleados cuyo salario es mayor que 90,000.
+Para responder a esta pregunta, podemos procesar el JSON y contar el número de empleados que tienen un salario superior a 90,000.
 
- Primero, convertimos el JSON en un objeto JavaScript utilizando `JSON.parse()`:
+ Primero, podemos extraer la información de salario de cada empleado utilizando una función como `map()` o `forEach()`. Luego, podemos utilizar un condicional para verificar si el salario es mayor que 90,000. Finalmente, podemos contar el número de empleados que cumplen con esta condición.
 
-```javascript
-const employees = [
-  {
-    "id": 1,
-    "name": "Alice",
-    "dept": "Engineering",
-    "salary": 95000
-  },
-  {
-    "id": 2,
-    "name": "Bob",
-    "dept": "Sales",
-    "salary": 87000
-  },
-  {
-    "id": 3,
-    "name": "Carol",
-    "dept": "Engineering",
-    "salary": 92000
-  }
-];
+En JavaScript, podríamos hacerlo de la siguiente manera:
 ```
-
-Luego, podemos utilizar un bucle `for` para iterar sobre los empleados y contar aquellos cuyo salario es mayor que 90,000:
-
-```javascript
+const employees = [...]; // obtener el array de empleados
 let count = 0;
-for (const employee of employees) {
+
+employees.forEach((employee) => {
   if (employee.salary > 90000) {
     count++;
   }
-}
-console.log(`El número de empleados con un salario superior a 90,000 es: ${count}`);
+});
+
+console.log(`Hay ${count} empleados con un salario superior a 90,000.`);
 ```
 
-Finalmente, podemos imprimir el resultado:
-
-```javascript
-// Output:
-// El número de empleados con un salario superior a 90,000 es: 2
+En este caso, la respuesta sería:
+```
+Hay 2 empleados con un salario superior a 90,000.
 ```
 
-En este caso, hay dos empleados (Alice y Carol) que tienen un salario superior a 90,000.
+Alice y Carol tienen un salario superior a 90,000.
 
 **Dataset Answer:**
 2
 
-**Tokens Used:** 469
+**Tokens Used:** 376
 
 ---
 
@@ -232,16 +227,16 @@ answer this question: ¿Cuál es el salario exacto de la empleada llamada Alice?
 ```
 
 #### Model Response
-According to the provided JSON data, the salary of the employee named "Alice" is exactly:
+Basándome en los datos proporcionados, puedo procesar el JSON y obtener la información solicitada.
 
-95000
+La respuesta es: El salario exacto de la empleada llamada Alice es 95000.
 
 #### Usage Metadata
 ```json
 {
   "promptTokenCount": 162,
-  "candidatesTokenCount": 22,
-  "totalTokenCount": 184
+  "candidatesTokenCount": 42,
+  "totalTokenCount": 204
 }
 ```
 
@@ -309,33 +304,33 @@ answer this question: ¿Cuál es el promedio de salario de todos los empleados e
 #### Model Response
 To calculate the average salary of all employees in the dataset, I can process the JSON data as follows:
 
-1. First, I'll extract the salaries from the JSON objects:
+1. First, I'll extract the salaries from the JSON array:
 ```json
-const salaries = [
-  95000,
-  87000,
-  92000
-];
+const salaries = [];
+for (const employee of data) {
+  salaries.push(employee.salary);
+}
+console.log(salaries); // Output: [95000, 87000, 92000]
 ```
-2. Then, I'll calculate the sum of the salaries:
+2. Next, I'll calculate the sum of all salaries:
 ```javascript
 const totalSalary = salaries.reduce((acc, current) => acc + current, 0);
 console.log(totalSalary); // Output: 274000
 ```
-3. Finally, I'll calculate the average salary by dividing the total salary by the number of employees:
+3. Finally, I'll divide the total salary by the number of employees to get the average salary:
 ```javascript
 const avgSalary = totalSalary / salaries.length;
-console.log(avgSalary); // Output: 91400
+console.log(avgSalary); // Output: 91433.33333333333
 ```
 
-So, the average salary of all employees in the dataset is $91,400.
+So, the average salary of all employees in the dataset is approximately $91,433.
 
 #### Usage Metadata
 ```json
 {
   "promptTokenCount": 164,
-  "candidatesTokenCount": 175,
-  "totalTokenCount": 339
+  "candidatesTokenCount": 201,
+  "totalTokenCount": 365
 }
 ```
 
@@ -401,19 +396,19 @@ answer this question: Enumera los nombres de los empleados que pertenecen al dep
 ```
 
 #### Model Response
-Based on the provided JSON data, I can extract the names of employees who belong to the "Engineering" department. Here are the results:
+Based on the provided JSON data, the employees who belong to the department of 'Engineering' are:
 
 1. Alice
 2. Carol
 
-These two employees have their department set to "Engineering", so they meet the criteria.
+These two employees have a "dept" value of "Engineering".
 
 #### Usage Metadata
 ```json
 {
   "promptTokenCount": 166,
-  "candidatesTokenCount": 54,
-  "totalTokenCount": 220
+  "candidatesTokenCount": 42,
+  "totalTokenCount": 208
 }
 ```
 
@@ -479,25 +474,39 @@ answer this question: ¿Qué departamento tiene el salario individual más alto:
 ```
 
 #### Model Response
-To answer this question, I'll need to process the JSON data and extract the relevant information.
+Para responder a esta pregunta, podemos procesar el JSON y comparar los salarios de cada departamento.
 
-First, I'll identify the employees in each department:
+ Primero, podemos extraer la información de salario para cada empleado y almacenarla en un diccionario:
 
-* Engineering: Alice (95000), Carol (92000)
-* Sales: Bob (87000)
+```
+salaries = {}
+for employee in data:
+    salaries[employee["dept"]] = [employee["salary"] for employee in data if employee["dept"] == employee["dept"]]
+```
 
-Next, I'll compare the salaries of employees in both departments. Since 95000 is greater than 92000 and 87000, it's clear that the highest individual salary is found in the Engineering department.
+Luego, podemos comparar los salarios de cada departamento:
 
-Therefore, my answer to the question is:
+```
+if max(salaries["Engineering"]) > max(salaries["Sales"]):
+  print("El salario individual más alto es en el Departamento de Ingeniería.")
+elif max(salaries["Sales"]) > max(salaries["Engineering"]):
+  print("El salario individual más alto es en Ventas (Departamento de Sales).")
+else:
+  print("Los salarios individuales son iguales en ambos departamentos.")
+```
 
-The department with the highest individual salary: Engineering.
+Al ejecutar este código, obtenemos el resultado:
+
+`El salario individual más alto es en el Departamento de Ingeniería.`
+
+Por lo tanto, el departamento que tiene el salario individual más alto es Engineering.
 
 #### Usage Metadata
 ```json
 {
   "promptTokenCount": 160,
-  "candidatesTokenCount": 114,
-  "totalTokenCount": 274
+  "candidatesTokenCount": 235,
+  "totalTokenCount": 395
 }
 ```
 
@@ -563,60 +572,37 @@ answer this question: ¿Cuántos empleados tienen un salario superior a 90,000?.
 ```
 
 #### Model Response
-Para responder a esta pregunta, podemos procesar el JSON y contar el número de empleados cuyo salario es mayor que 90,000.
+Para responder a esta pregunta, podemos procesar el JSON y contar el número de empleados que tienen un salario superior a 90,000.
 
- Primero, convertimos el JSON en un objeto JavaScript utilizando `JSON.parse()`:
+ Primero, podemos extraer la información de salario de cada empleado utilizando una función como `map()` o `forEach()`. Luego, podemos utilizar un condicional para verificar si el salario es mayor que 90,000. Finalmente, podemos contar el número de empleados que cumplen con esta condición.
 
-```javascript
-const employees = [
-  {
-    "id": 1,
-    "name": "Alice",
-    "dept": "Engineering",
-    "salary": 95000
-  },
-  {
-    "id": 2,
-    "name": "Bob",
-    "dept": "Sales",
-    "salary": 87000
-  },
-  {
-    "id": 3,
-    "name": "Carol",
-    "dept": "Engineering",
-    "salary": 92000
-  }
-];
+En JavaScript, podríamos hacerlo de la siguiente manera:
 ```
-
-Luego, podemos utilizar un bucle `for` para iterar sobre los empleados y contar aquellos cuyo salario es mayor que 90,000:
-
-```javascript
+const employees = [...]; // obtener el array de empleados
 let count = 0;
-for (const employee of employees) {
+
+employees.forEach((employee) => {
   if (employee.salary > 90000) {
     count++;
   }
-}
-console.log(`El número de empleados con un salario superior a 90,000 es: ${count}`);
+});
+
+console.log(`Hay ${count} empleados con un salario superior a 90,000.`);
 ```
 
-Finalmente, podemos imprimir el resultado:
-
-```javascript
-// Output:
-// El número de empleados con un salario superior a 90,000 es: 2
+En este caso, la respuesta sería:
+```
+Hay 2 empleados con un salario superior a 90,000.
 ```
 
-En este caso, hay dos empleados (Alice y Carol) que tienen un salario superior a 90,000.
+Alice y Carol tienen un salario superior a 90,000.
 
 #### Usage Metadata
 ```json
 {
   "promptTokenCount": 162,
-  "candidatesTokenCount": 307,
-  "totalTokenCount": 469
+  "candidatesTokenCount": 214,
+  "totalTokenCount": 376
 }
 ```
 

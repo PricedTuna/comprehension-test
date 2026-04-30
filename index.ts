@@ -6,6 +6,7 @@
 //   --delay <ms>: Wait time between requests (default: 12000ms)
 
 async function main() {
+  const { JSON_minimal } = await import("./object-notations/JSON.ts");
   const args = process.argv.slice(2);
   
   // Parse provider argument
@@ -31,15 +32,12 @@ async function main() {
   // Dynamically import based on provider
   if (provider === "local") {
     const { runComprehensionTest } = await import("./test-runner-3.ts");
-    const { JSON_minimal } = await import("./object-notations/JSON.ts");
     await runComprehensionTest(JSON_minimal, delayMs);
   } else if (provider === "openai") {
     const { runComprehensionTest } = await import("./test-runner-2.ts");
-    const { JSON_minimal } = await import("./object-notations/JSON.ts");
     await runComprehensionTest(JSON_minimal, delayMs);
   } else {
     const { runComprehensionTest } = await import("./test-runner.ts");
-    const { JSON_minimal } = await import("./object-notations/JSON.ts");
     await runComprehensionTest(JSON_minimal, delayMs);
   }
 }

@@ -4,14 +4,23 @@ import type { Dataset } from "./interfaces.ts";
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const getSessionPrompt = (dataset: Dataset, question: string, sessionNumber: number): string => {
-  return `Session ${sessionNumber}:
+  return `
 Based on the following data:
 
 \`\`\`
 ${dataset.data}
 \`\`\`
 
-answer this question: ${question}.`;
+Answer the following question:
+
+${question}
+
+IMPORTANT RULES:
+- Return ONLY the final answer
+- Do NOT include explanations
+- Do NOT include extra text
+- Do NOT repeat the question
+`;
 };
 
 export async function getAIResponse(
