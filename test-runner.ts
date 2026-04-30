@@ -3,7 +3,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { fileURLToPath } from "url";
 import { getSessionPrompt, getAIResponse, sleep } from "./ai-interaction.ts";
-import { MODEL_NAME } from "./ai-settings.ts";
+import { MODEL_NAME, provider } from "./ai-settings.ts";
 import {
   type SessionData,
   buildHeader,
@@ -15,17 +15,42 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RESULTS_DIR = path.join(__dirname, "results");
 
+const ASCII_HEADERS: Record<string, string> = {
+  gemini: `
+   ██████╗ ███████╗███╗   ███╗██╗███╗   ██╗██╗
+  ██╔════╝ ██╔════╝████╗ ████║██║████╗  ██║██║
+  ██║  ███╗█████╗  ██╔████╔██║██║██╔██╗ ██║██║
+  ██║   ██║██╔══╝  ██║╚██╔╝██║██║██║╚██╗██║██║
+  ╚██████╔╝███████╗██║ ╚═╝ ██║██║██║ ╚████║██║
+   ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝`,
+  openai: `
+   ██████╗ ██████╗ ███████╗███╗   ██╗
+  ██╔═══██╗██╔══██╗██╔════╝████╗  ██║
+  ██║   ██║██████╔╝█████╗  ██╔██╗ ██║
+  ██║   ██║██╔═══╝ ██╔══╝  ██║╚██╗██║
+  ╚██████╔╝██║     ███████╗██║ ╚████║
+   ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝`,
+  local: `
+   ██╗      ██████╗  ██████╗  █████╗  ██╗
+  ██║     ██╔═══██╗██╔════╝ ██╔══██╗ ██║
+  ██║     ██║   ██║██║      ███████║ ██║
+  ██║     ██║   ██║██║      ██╔══██║ ██║
+  ███████╗╚██████╔╝╚██████╗ ██║  ██║ ██████╗
+  ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝`
+};
+
+const API_MESSAGES: Record<string, string> = {
+  gemini: "Sending request to Gemini API...",
+  openai: "Sending request to OpenAI API...",
+  local: "Sending request to Local API..."
+};
+
 export async function runComprehensionTest(objectNotation: ObjectNotation, delayMs: number = 12000) {
   const timestamp = new Date().toISOString().replace(/:/g, "-").replace(/\./g, "_");
   const folderName = `${objectNotation.name}_${timestamp}`;
   const folderPath = path.join(RESULTS_DIR, folderName);
 
-  console.log("\n   ██████╗ ███████╗███╗   ███╗██╗███╗   ██╗██╗");
-  console.log("  ██╔════╝ ██╔════╝████╗ ████║██║████╗  ██║██║");
-  console.log("  ██║  ███╗█████╗  ██╔████╔██║██║██╔██╗ ██║██║");
-  console.log("  ██║   ██║██╔══╝  ██║╚██╔╝██║██║██║╚██╗██║██║");
-  console.log("  ╚██████╔╝███████╗██║ ╚═╝ ██║██║██║ ╚████║██║");
-  console.log("   ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝");
+  console.log(ASCII_HEADERS[provider]);
   console.log("\n" + "=".repeat(60));
   console.log(`  MODEL: ${MODEL_NAME}`);
   console.log(`  NOTATION: ${objectNotation.name}`);
@@ -56,7 +81,7 @@ export async function runComprehensionTest(objectNotation: ObjectNotation, delay
         console.log(`Session ${sessionNumber}: Waiting ${delayMs}ms for rate limit...`);
         await sleep(delayMs);
 
-        console.log(`Session ${sessionNumber}: Sending request to Gemini API...`);
+        console.log(`Session ${sessionNumber}: ${API_MESSAGES[provider]}`);
         const { textResponse, usageMetadata } = await getAIResponse(
           prompt,
           objectNotation.systemInstruction,

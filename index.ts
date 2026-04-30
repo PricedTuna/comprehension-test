@@ -1,3 +1,7 @@
+import { initialize as initAISettings } from "./ai-settings.ts";
+import { runComprehensionTest } from "./test-runner.ts";
+import { JSON_minimal } from "./object-notations/JSON.ts";
+
 // Entry point with provider selection via CLI args
 // Usage: npx ts-node --esm index.ts [--gemini|--openai|--local] [--delay <ms>]
 //   --gemini, -g: Use Gemini (default)
@@ -6,7 +10,6 @@
 //   --delay <ms>: Wait time between requests (default: 12000ms)
 
 async function main() {
-  const { JSON_minimal } = await import("./object-notations/JSON.ts");
   const args = process.argv.slice(2);
   
   // Parse provider argument
@@ -29,17 +32,11 @@ async function main() {
     }
   }
   
-  // Dynamically import based on provider
-  if (provider === "local") {
-    const { runComprehensionTest } = await import("./test-runner-3.ts");
-    await runComprehensionTest(JSON_minimal, delayMs);
-  } else if (provider === "openai") {
-    const { runComprehensionTest } = await import("./test-runner-2.ts");
-    await runComprehensionTest(JSON_minimal, delayMs);
-  } else {
-    const { runComprehensionTest } = await import("./test-runner.ts");
-    await runComprehensionTest(JSON_minimal, delayMs);
-  }
+  // Initialize AI settings with selected provider
+  initAISettings(provider);
+  
+  // Run test
+  await runComprehensionTest(JSON_minimal, delayMs);
 }
 
 main().catch(console.error);
